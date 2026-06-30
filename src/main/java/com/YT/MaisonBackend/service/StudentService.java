@@ -15,6 +15,10 @@ import com.YT.MaisonBackend.repository.UserRepository;
 
 @Service
 @Transactional
+/**
+ * Handles student profile creation and updates.
+ * It links a student profile to an existing user account.
+ */
 public class StudentService {
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
@@ -24,6 +28,9 @@ public class StudentService {
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 * Creates a student profile for an existing user.
+	 */
 	public StudentResponse createStudent(StudentCreateRequest request) {
 		// The student profile must be linked to an existing user account.
 		User user = userRepository.findById(request.getUserId())
@@ -32,6 +39,9 @@ public class StudentService {
 		return StudentMapper.toResponse(studentRepository.save(StudentMapper.toEntity(request, user)));
 	}
 
+	/**
+	 * Updates the student profile fields and optionally repoints the linked user.
+	 */
 	public StudentResponse updateStudent(java.util.UUID id, StudentUpdateRequest request) {
 		Student student = studentRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("Student not found"));

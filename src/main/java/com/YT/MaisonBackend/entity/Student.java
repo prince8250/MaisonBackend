@@ -14,7 +14,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -38,11 +37,6 @@ public class Student {
 	@OneToOne(optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
-
-	@ManyToOne
-	@JoinColumn(name = "hostel_id")
-	private Hostel hostel;
-
 	@Column(name = "student_id_number", nullable = false)
 	private String studentIdNumber;
 

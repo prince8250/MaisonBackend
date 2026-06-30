@@ -17,6 +17,10 @@ import com.YT.MaisonBackend.repository.UserRepository;
 
 @Service
 @Transactional
+/**
+ * Manages application users.
+ * This service supports listing, lookup, creation, updates, and deletion.
+ */
 public class UserService {
 	private final UserRepository userRepository;
 
@@ -24,11 +28,17 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 * Returns every user in the system.
+	 */
 	@Transactional(readOnly = true)
 	public List<UserResponse> findAllUsers() {
 		return userRepository.findAll().stream().map(UserMapper::toResponse).toList();
 	}
 
+	/**
+	 * Finds a single user by id.
+	 */
 	@Transactional(readOnly = true)
 	public UserResponse findUserById(UUID id) {
 		return userRepository.findById(id)
@@ -36,6 +46,9 @@ public class UserService {
 				.orElseThrow(() -> new NotFoundException("User not found"));
 	}
 
+	/**
+	 * Creates a new user after checking that the email is unique.
+	 */
 	public UserResponse createUser(UserCreateRequest request) {
 		if (userRepository.existsByEmail(request.getEmail())) {
 			throw new ConflictException("Email already exists");
@@ -44,6 +57,9 @@ public class UserService {
 		return UserMapper.toResponse(userRepository.save(UserMapper.toEntity(request)));
 	}
 
+	/**
+	 * Updates an existing user while preserving email uniqueness.
+	 */
 	public UserResponse updateUser(UUID id, UserUpdateRequest request) {
 		User entity = userRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("User not found"));
@@ -58,30 +74,13 @@ public class UserService {
 		return UserMapper.toResponse(userRepository.save(entity));
 	}
 
+	/**
+	 * Deletes a user record.
+	 */
 	public void deleteUser(UUID id) {
 		User entity = userRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("User not found"));
 		userRepository.delete(entity);
 	}
 
-	private void applyRequest(User user, String firstName, String lastName, String username, String email, String password, User.Role role) {
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setUsername(username);
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setRole(role);
-	}
-
-	private UserResponse toResponse(User user) {
-		return new UserResponse(
-				user.getId(),
-				user.getFirstName(),
-				user.getLastName(),
-				user.getUsername(),
-				user.getEmail(),
-				user.getRole(),
-				user.getCreatedAt(),
-				user.getUpdatedAt());
-		}
 }

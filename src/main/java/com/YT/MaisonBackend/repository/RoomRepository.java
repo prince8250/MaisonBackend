@@ -1,13 +1,13 @@
 package com.YT.MaisonBackend.repository;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.YT.MaisonBackend.entity.Student;
+import com.YT.MaisonBackend.entity.Room;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, UUID> {
+public interface RoomRepository extends JpaRepository<Room, UUID> {
+	boolean existsByHostel_IdAndRoomNumber(UUID hostelId, String roomNumber);
 }

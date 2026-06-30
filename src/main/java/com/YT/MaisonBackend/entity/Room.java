@@ -7,7 +7,12 @@ import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -19,24 +24,29 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "hostels")
-public class Hostel {
+@Table(name = "rooms")
+public class Room {
 	@Id
 	@UuidGenerator
 	@Column(nullable = false, updatable = false)
 	private UUID id;
 
-	@Column(name = "phone_number", nullable = false)
-	private String phoneNumber;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "hostel_id", nullable = false)
+	private Hostel hostel;
 
-	@Column(nullable = false)
-	private String name;
+	@Column(name = "room_number", nullable = false)
+	private String roomNumber;
 
-	@Column(nullable = false)
-	private String address;
+	@Column(name = "room_type", nullable = false)
+	private String roomType;
 
 	@Column(nullable = false)
 	private Integer capacity;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "gender_restriction", nullable = false)
+	private GenderRestriction genderRestriction;
 
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;
@@ -54,5 +64,10 @@ public class Hostel {
 	@PreUpdate
 	protected void onUpdate() {
 		updatedAt = LocalDateTime.now();
+	}
+
+	public enum GenderRestriction {
+		MALE,
+		FEMALE
 	}
 }
