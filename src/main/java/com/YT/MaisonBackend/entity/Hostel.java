@@ -1,6 +1,8 @@
 package com.YT.MaisonBackend.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
@@ -8,6 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -38,6 +41,9 @@ public class Hostel {
 	@Column(nullable = false)
 	private Integer capacity;
 
+	@OneToMany(mappedBy = "hostel")
+	private List<Student> students = new ArrayList<>();
+
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
@@ -54,5 +60,15 @@ public class Hostel {
 	@PreUpdate
 	protected void onUpdate() {
 		updatedAt = LocalDateTime.now();
+	}
+
+	public void addStudent(Student student) {
+		students.add(student);
+		student.setHostel(this);
+	}
+
+	public void removeStudent(Student student) {
+		students.remove(student);
+		student.setHostel(null);
 	}
 }
