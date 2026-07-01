@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RoomAllocationCreateRequest {
 	private UUID studentId;
+	private UUID hostelId;
 	private UUID roomId;
 	private String academicYear;
 }

@@ -12,6 +12,7 @@ import com.YT.MaisonBackend.dto.RoomAllocationResponse;
 import com.YT.MaisonBackend.entity.Room;
 import com.YT.MaisonBackend.entity.RoomAllocation;
 import com.YT.MaisonBackend.entity.Student;
+import com.YT.MaisonBackend.exception.BadRequestException;
 import com.YT.MaisonBackend.exception.ConflictException;
 import com.YT.MaisonBackend.exception.NotFoundException;
 import com.YT.MaisonBackend.mapper.RoomAllocationMapper;
@@ -48,6 +49,14 @@ public class RoomAllocationService {
 				.orElseThrow(() -> new NotFoundException("Student not found"));
 		Room room = roomRepository.findById(request.getRoomId())
 				.orElseThrow(() -> new NotFoundException("Room not found"));
+
+		if (request.getHostelId() == null) {
+			throw new BadRequestException("Hostel ID is required");
+		}
+
+		if (!room.getHostel().getId().equals(request.getHostelId())) {
+			throw new ConflictException("Room does not belong to the selected hostel");
+		}
 
 		RoomAllocation existingAllocation = roomAllocationRepository
 				.findByStudent_IdAndAcademicYear(student.getId(), request.getAcademicYear())
