@@ -47,11 +47,15 @@ public class UserService {
 	}
 
 	/**
-	 * Creates a new user after checking that the email is unique.
+	 * Creates a new user after checking that the email and username are unique.
 	 */
 	public UserResponse createUser(UserCreateRequest request) {
 		if (userRepository.existsByEmail(request.getEmail())) {
 			throw new ConflictException("Email already exists");
+		}
+
+		if (userRepository.existsByUsername(request.getUsername())) {
+			throw new ConflictException("Username already exists");
 		}
 
 		return UserMapper.toResponse(userRepository.save(UserMapper.toEntity(request)));
@@ -67,6 +71,12 @@ public class UserService {
 		if (request.getEmail() != null) {
 			if (!request.getEmail().equals(entity.getEmail()) && userRepository.existsByEmail(request.getEmail())) {
 				throw new ConflictException("Email already exists");
+			}
+		}
+
+		if (request.getUsername() != null) {
+			if (!request.getUsername().equals(entity.getUsername()) && userRepository.existsByUsername(request.getUsername())) {
+				throw new ConflictException("Username already exists");
 			}
 		}
 
