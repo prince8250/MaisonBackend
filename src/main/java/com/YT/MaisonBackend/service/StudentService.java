@@ -13,12 +13,11 @@ import com.YT.MaisonBackend.mapper.StudentMapper;
 import com.YT.MaisonBackend.repository.StudentRepository;
 import com.YT.MaisonBackend.repository.UserRepository;
 
+/**
+ * Service for creating and updating student profiles linked to users.
+ */
 @Service
 @Transactional
-/**
- * Handles student profile creation and updates.
- * It links a student profile to an existing user account.
- */
 public class StudentService {
 	private final StudentRepository studentRepository;
 	private final UserRepository userRepository;
@@ -29,10 +28,9 @@ public class StudentService {
 	}
 
 	/**
-	 * Creates a student profile for an existing user.
+	 * Creates a student profile for an existing user account.
 	 */
 	public StudentResponse createStudent(StudentCreateRequest request) {
-		// The student profile must be linked to an existing user account.
 		User user = userRepository.findById(request.getUserId())
 				.orElseThrow(() -> new NotFoundException("User not found"));
 
@@ -40,7 +38,7 @@ public class StudentService {
 	}
 
 	/**
-	 * Updates the student profile fields and optionally repoints the linked user.
+	 * Updates student profile fields and optionally repoints the linked user.
 	 */
 	public StudentResponse updateStudent(java.util.UUID id, StudentUpdateRequest request) {
 		Student student = studentRepository.findById(id)

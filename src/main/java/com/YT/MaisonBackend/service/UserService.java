@@ -15,12 +15,11 @@ import com.YT.MaisonBackend.exception.NotFoundException;
 import com.YT.MaisonBackend.mapper.UserMapper;
 import com.YT.MaisonBackend.repository.UserRepository;
 
+/**
+ * Service for managing application users.
+ */
 @Service
 @Transactional
-/**
- * Manages application users.
- * This service supports listing, lookup, creation, updates, and deletion.
- */
 public class UserService {
 	private final UserRepository userRepository;
 
@@ -62,7 +61,7 @@ public class UserService {
 	}
 
 	/**
-	 * Updates an existing user while preserving email uniqueness.
+	 * Updates an existing user while preserving email and username uniqueness.
 	 */
 	public UserResponse updateUser(UUID id, UserUpdateRequest request) {
 		User entity = userRepository.findById(id)

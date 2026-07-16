@@ -44,6 +44,9 @@ public class Room {
 	@Column(nullable = false)
 	private Integer capacity;
 
+	@Column(nullable = false)
+	private Integer occupancy = 0;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "gender_restriction", nullable = false)
 	private GenderRestriction genderRestriction;
@@ -57,6 +60,9 @@ public class Room {
 	@PrePersist
 	protected void onCreate() {
 		LocalDateTime now = LocalDateTime.now();
+		if (occupancy == null) {
+			occupancy = 0;
+		}
 		createdAt = now;
 		updatedAt = now;
 	}

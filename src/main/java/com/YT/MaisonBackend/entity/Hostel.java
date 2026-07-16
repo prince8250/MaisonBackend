@@ -9,7 +9,10 @@ import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -40,6 +43,23 @@ public class Hostel {
 
 	@Column(nullable = false)
 	private Integer capacity;
+
+	@Column(columnDefinition = "TEXT")
+	private String pricing;
+
+	@Column(columnDefinition = "TEXT")
+	private String location;
+
+	@Column(columnDefinition = "TEXT")
+	private String facilities;
+
+	@Column(columnDefinition = "TEXT")
+	private String roomTypes;
+
+	@ElementCollection
+	@CollectionTable(name = "hostel_image_urls", joinColumns = @JoinColumn(name = "hostel_id"))
+	@Column(name = "image_url", nullable = false)
+	private List<String> imageUrls = new ArrayList<>();
 
 	@OneToMany(mappedBy = "hostel")
 	private List<Room> rooms = new ArrayList<>();

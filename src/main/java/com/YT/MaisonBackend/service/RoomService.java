@@ -16,11 +16,11 @@ import com.YT.MaisonBackend.mapper.RoomMapper;
 import com.YT.MaisonBackend.repository.HostelRepository;
 import com.YT.MaisonBackend.repository.RoomRepository;
 
+/**
+ * Service for creating, updating, and deleting hostel rooms.
+ */
 @Service
 @Transactional
-/**
- * Handles room registration and room metadata updates for a hostel.
- */
 public class RoomService {
 	private final RoomRepository roomRepository;
 	private final HostelRepository hostelRepository;
@@ -31,7 +31,7 @@ public class RoomService {
 	}
 
 	/**
-	 * Creates a room inside an existing hostel.
+	 * Creates a room inside an existing hostel and prevents duplicate room numbers.
 	 */
 	public RoomResponse addRoom(RoomCreateRequest request) {
 		Hostel hostel = hostelRepository.findById(request.getHostelId())
@@ -45,7 +45,7 @@ public class RoomService {
 	}
 
 	/**
-	 * Updates room details such as room number, type, capacity, or hostel.
+	 * Updates room details such as room number, type, capacity, or hostel assignment.
 	 */
 	public RoomResponse updateRoom(UUID roomId, RoomUpdateRequest request) {
 		Room room = roomRepository.findById(roomId)

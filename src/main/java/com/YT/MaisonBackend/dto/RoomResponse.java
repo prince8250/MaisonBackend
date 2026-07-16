@@ -16,6 +16,7 @@ public class RoomResponse {
 	private final String roomNumber;
 	private final String roomType;
 	private final Integer capacity;
+	private final Integer occupancy;
 	private final Room.GenderRestriction genderRestriction;
 	private final LocalDateTime createdAt;
 	private final LocalDateTime updatedAt;

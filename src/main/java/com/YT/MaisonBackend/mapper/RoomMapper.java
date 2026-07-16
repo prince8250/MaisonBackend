@@ -45,6 +45,7 @@ public final class RoomMapper {
 				room.getRoomNumber(),
 				room.getRoomType(),
 				room.getCapacity(),
+				room.getOccupancy(),
 				room.getGenderRestriction(),
 				room.getCreatedAt(),
 				room.getUpdatedAt());

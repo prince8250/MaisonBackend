@@ -20,12 +20,11 @@ import com.YT.MaisonBackend.repository.RoomAllocationRepository;
 import com.YT.MaisonBackend.repository.RoomRepository;
 import com.YT.MaisonBackend.repository.StudentRepository;
 
+/**
+ * Service for assigning and removing students from hostel rooms.
+ */
 @Service
 @Transactional
-/**
- * Handles room allocation rules.
- * It assigns students to rooms, enforces capacity, and checks gender restrictions.
- */
 public class RoomAllocationService {
 	private final RoomAllocationRepository roomAllocationRepository;
 	private final RoomRepository roomRepository;
@@ -42,7 +41,7 @@ public class RoomAllocationService {
 
 	/**
 	 * Assigns a student to a room for a given academic year.
-	 * The method rejects duplicate allocations, enforces gender restrictions, and stops at room capacity.
+	 * The allocation respects hostel ownership, duplicate checks, gender restrictions, and capacity.
 	 */
 	public RoomAllocationResponse assignStudent(RoomAllocationCreateRequest request) {
 		Student student = studentRepository.findById(request.getStudentId())
@@ -70,12 +69,12 @@ public class RoomAllocationService {
 			throw new ConflictException("Student gender does not match room gender restriction");
 		}
 
-		long allocatedStudents = roomAllocationRepository.countByRoom_IdAndAcademicYear(room.getId(), request.getAcademicYear());
-		if (allocatedStudents >= room.getCapacity()) {
+		int occupancy = room.getOccupancy() == null ? 0 : room.getOccupancy();
+		if (occupancy >= room.getCapacity()) {
 			throw new ConflictException("Room is already full");
 		}
 
-		boolean roomAvailable = allocatedStudents + 1 < room.getCapacity();
+		boolean roomAvailable = occupancy + 1 < room.getCapacity();
 		List<RoomAllocation> currentAllocations = roomAllocationRepository
 				.findAll().stream()
 				.filter(allocation -> allocation.getRoom().getId().equals(room.getId())
@@ -96,6 +95,8 @@ public class RoomAllocationService {
 		}
 		allocation.getRoommates().addAll(roommates);
 		roomAllocationRepository.saveAll(currentAllocations);
+		room.setOccupancy(occupancy + 1);
+		roomRepository.save(room);
 		return RoomAllocationMapper.toResponse(roomAllocationRepository.save(allocation));
 	}
 
@@ -105,6 +106,10 @@ public class RoomAllocationService {
 	public void deleteAllocation(UUID allocationId) {
 		RoomAllocation allocation = roomAllocationRepository.findById(allocationId)
 				.orElseThrow(() -> new NotFoundException("Room allocation not found"));
+		Room room = allocation.getRoom();
+		int occupancy = room.getOccupancy() == null ? 0 : room.getOccupancy();
+		room.setOccupancy(Math.max(0, occupancy - 1));
+		roomRepository.save(room);
 		roomAllocationRepository.delete(allocation);
 	}
 }
