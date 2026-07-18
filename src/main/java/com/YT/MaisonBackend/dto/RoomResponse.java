@@ -1,5 +1,6 @@
 package com.YT.MaisonBackend.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class RoomResponse {
 	private final String roomNumber;
 	private final String roomType;
 	private final Integer capacity;
+	private final BigDecimal price;
 	private final Integer occupancy;
 	private final Room.GenderRestriction genderRestriction;
 	private final LocalDateTime createdAt;

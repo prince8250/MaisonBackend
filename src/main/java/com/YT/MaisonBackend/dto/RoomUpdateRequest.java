@@ -1,5 +1,6 @@
 package com.YT.MaisonBackend.dto;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import com.YT.MaisonBackend.entity.Room;
@@ -16,5 +17,6 @@ public class RoomUpdateRequest {
 	private String roomNumber;
 	private String roomType;
 	private Integer capacity;
+	private BigDecimal price;
 	private Room.GenderRestriction genderRestriction;
 }

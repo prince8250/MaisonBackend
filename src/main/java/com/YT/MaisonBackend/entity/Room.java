@@ -1,6 +1,7 @@
 package com.YT.MaisonBackend.entity;
 
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
@@ -43,6 +44,9 @@ public class Room {
 
 	@Column(nullable = false)
 	private Integer capacity;
+
+	@Column(nullable = false)
+	private BigDecimal price;
 
 	@Column(nullable = false)
 	private Integer occupancy = 0;

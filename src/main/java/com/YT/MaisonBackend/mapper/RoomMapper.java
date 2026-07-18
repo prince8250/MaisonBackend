@@ -16,6 +16,7 @@ public final class RoomMapper {
 		room.setRoomNumber(request.getRoomNumber());
 		room.setRoomType(request.getRoomType());
 		room.setCapacity(request.getCapacity());
+		room.setPrice(request.getPrice());
 		room.setGenderRestriction(request.getGenderRestriction());
 		return room;
 	}
@@ -33,6 +34,9 @@ public final class RoomMapper {
 		if (request.getCapacity() != null) {
 			room.setCapacity(request.getCapacity());
 		}
+		if (request.getPrice() != null) {
+			room.setPrice(request.getPrice());
+		}
 		if (request.getGenderRestriction() != null) {
 			room.setGenderRestriction(request.getGenderRestriction());
 		}
@@ -45,6 +49,7 @@ public final class RoomMapper {
 				room.getRoomNumber(),
 				room.getRoomType(),
 				room.getCapacity(),
+				room.getPrice(),
 				room.getOccupancy(),
 				room.getGenderRestriction(),
 				room.getCreatedAt(),
