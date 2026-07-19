@@ -29,7 +29,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PaystackPaymentService {
 	private static final String DEFAULT_CURRENCY = "GHS";
 
@@ -46,15 +49,6 @@ public class PaystackPaymentService {
 
 	@Value("${paystack.currency:GHS}")
 	private String paystackCurrency;
-
-	public PaystackPaymentService(PaymentRepository paymentRepository,
-			RoomAllocationRepository roomAllocationRepository,
-			ObjectMapper objectMapper) {
-		this.paymentRepository = paymentRepository;
-		this.roomAllocationRepository = roomAllocationRepository;
-		this.objectMapper = objectMapper;
-		this.httpClient = HttpClient.newHttpClient();
-	}
 
 	public PaystackPaymentResponse initializePayment(PaystackInitializeRequest request) {
 		RoomAllocation roomAllocation = roomAllocationRepository.findById(request.getRoomAllocationId())
