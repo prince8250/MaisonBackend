@@ -28,6 +28,11 @@ public class RoomAllocationController {
 	public ResponseEntity<RoomAllocationResponse> assignStudent(@RequestBody RoomAllocationCreateRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(roomAllocationService.assignStudent(request));
 	}
+	
+	@PostMapping("/book")
+	public ResponseEntity<RoomAllocationResponse> bookRoom(@RequestBody RoomAllocationCreateRequest request) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(roomAllocationService.assignStudent(request));
+	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteAllocation(@PathVariable UUID id) {
